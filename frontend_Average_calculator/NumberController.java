@@ -24,7 +24,7 @@ public class NumberController {
         for (Integer num : fetchedNumbers) {
             if (!numberWindow.contains(num)) {
                 if (numberWindow.size() >= WINDOW_SIZE) {
-                    numberWindow.pollFirst(); // remove oldest
+                    numberWindow.pollFirst(); 
                 }
                 numberWindow.addLast(num);
             }
@@ -61,7 +61,7 @@ public class NumberController {
             return map.getOrDefault("numbers", List.of());
 
         } catch (Exception e) {
-            return List.of(); // ignore errors or timeouts
+            return List.of(); 
         }
     }
 }
