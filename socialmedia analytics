@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Social Media Viewer</title>
+</head>
+<body>
+  <h2>Users</h2>
+  <ul id="users"></ul>
+
+  <h2>Posts</h2>
+  <ul id="posts"></ul>
+
+  <h2>Comments</h2>
+  <ul id="comments"></ul>
+
+  <script>
+    const BASE_URL = "http://localhost:3000/api/v1/social-media-server";
+
+    // Get Users
+    fetch(`${BASE_URL}/users`)
+      .then(res => res.json())
+      .then(users => {
+        const userList = document.getElementById("users");
+        users.forEach(user => {
+          const li = document.createElement("li");
+          li.textContent = user.name;
+          li.onclick = () => loadPosts(user.id);
+          userList.appendChild(li);
+        });
+      });
+
+    // Get Posts by User ID
+    function loadPosts(userId) {
+      document.getElementById("posts").innerHTML = "";
+      document.getElementById("comments").innerHTML = "";
+
+      fetch(`${BASE_URL}/users/${userId}/posts`)
+        .then(res => res.json())
+        .then(posts => {
+          const postList = document.getElementById("posts");
+          posts.forEach(post => {
+            const li = document.createElement("li");
+            li.textContent = post.content;
+            li.onclick = () => loadComments(post.id);
+            postList.appendChild(li);
+          });
+        });
+    }
+
+    // Get Comments by Post ID
+    function loadComments(postId) {
+      document.getElementById("comments").innerHTML = "";
+
+      fetch(`${BASE_URL}/posts/${postId}/comments`)
+        .then(res => res.json())
+        .then(comments => {
+          const commentList = document.getElementById("comments");
+          comments.forEach(comment => {
+            const li = document.createElement("li");
+            li.textContent = comment.content;
+            commentList.appendChild(li);
+          });
+        });
+    }
+  </script>
+</body>
+</html>
